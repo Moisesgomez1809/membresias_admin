@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "40124128591",
+    "project_id": "membresias-admin",
+    "storage_bucket": "membresias-admin.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40124128591:android:35036ddf6e007382ed793a",
+        "android_client_info": {
+          "package_name": "com.example.membresias_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWf3d_AmVX9WigeajLO9InkFjZWkSQjpc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
