@@ -5,18 +5,17 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Future<String?> getUserRole(String email) async {
+  // Cambié la función para buscar por UID en lugar de email
+  Future<String?> getUserRole(String uid) async {
     try {
-      // Asumiendo que tienes una colección 'usuarios' con un campo 'role'
-      var userDoc = await FirebaseFirestore.instance
-          .collection('usuarios')
-          .doc(email)
-          .get();
+      // Buscar en Firestore por UID del usuario (ya que es único)
+      var userDoc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
       if (userDoc.exists) {
         return userDoc.data()?[
             'role']; // Asegúrate de que 'role' sea el nombre correcto del campo
       }
-      return null;
+      return null; // Si no se encuentra el documento
     } catch (e) {
       print('Error al obtener el rol del usuario: $e');
       return null;

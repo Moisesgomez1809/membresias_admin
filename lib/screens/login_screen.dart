@@ -31,10 +31,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (user != null) {
         // Aquí verificamos el rol del usuario
-        String? userRole = await AuthService().getUserRole(user.email!);
+        String? userRole = await AuthService().getUserRole(user.uid);
+        List<String> validAdminRoles = ['admin', 'admin1', 'admin2', 'admin3'];
 
-        if (userRole == 'admin') {
-          // Si el rol es 'admin', redirigimos a la pantalla de home
+        if (validAdminRoles.contains(userRole)) {
+          // Si el rol está en la lista de roles válidos, redirigimos a la pantalla de home
           Navigator.pushReplacementNamed(context, '/home');
         } else if (userRole == 'business_user') {
           // Si el rol es 'business_user', redirigimos a la pantalla de gestión de negocios

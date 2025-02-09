@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
@@ -93,26 +94,34 @@ class _AddMembershipScreenState extends State<AddMembershipScreen> {
       final snapshot = await ref.get();
 
       if (snapshot.exists) {
-        // Agregar datos del cliente a la base de datos
-        final DatabaseReference membersRef =
-            FirebaseDatabase.instance.ref('memberships/$scannedQrCode');
-        await membersRef.set({
-          'name': name,
-          'address': address,
-          'membershipType': membershipType,
-          'expirationDate': expirationDate,
-          'isActive': true,
-        });
+        // Obtener el ID del admin (usuario autenticado)
+        User? user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          String adminId = user.uid; // ID del admin
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Membresía registrada exitosamente')),
-        );
+          // Agregar datos del cliente a la base de datos
+          final DatabaseReference membersRef =
+              FirebaseDatabase.instance.ref('memberships/$scannedQrCode');
+          await membersRef.set({
+            'name': name,
+            'address': address,
+            'membershipType': membershipType,
+            'expirationDate': expirationDate,
+            'isActive': true,
+            'adminId': adminId, // Guardamos el admin que activó la membresía
+            'createdAt': DateTime.now().toIso8601String(), // Fecha de alta
+          });
 
-        // Reiniciar formulario y estado
-        setState(() {
-          scannedQrCode = null;
-          isFormVisible = false;
-        });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Membresía registrada exitosamente')),
+          );
+
+          // Reiniciar formulario y estado
+          setState(() {
+            scannedQrCode = null;
+            isFormVisible = false;
+          });
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('El QR escaneado no es válido')),
